@@ -1,0 +1,187 @@
+openapi: 3.0.3
+info:
+  title: Softek Solution | Pedro Charun
+  description: Api to gets planets and species from swapi.
+  contact:
+    email: mlosail3@gmail.com
+  version: 1.0.0
+paths: 
+  /species:
+    get:
+      tags:
+        - especies
+      summary: obtener una especie por codigo.
+      description: obtener una especie por codigo.
+      operationId: retrieveSpecies.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Message to describe the end point status.
+                  data:
+                    $ref: '#/components/schemas/SpeciesResponse'
+    post:
+      tags:
+        - especies
+      summary: crear una nueva especie.
+      description: Crear una nueva especie en DynnamoDB.
+      operationId: storeSpecies.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpeciesResponse'
+      responses:
+        '201':
+          description: Created
+  /planet:
+    get:
+      tags:
+        - planet
+      summary: Obtener un planeta por codigo
+      description: Obtener un planeta por codigo
+      operationId: retrievePlanet.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Message to describe the end point status.
+                  data:
+                    $ref: '#/components/schemas/PlanetResponse'
+    post:
+      tags:
+        - planet
+      summary: crear un nuevo planeta
+      description: Crear un nuevo planeta en DynnamoDB.
+      operationId: storePlanet.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlanetResponse'
+      responses:
+        '201':
+          description: Created
+components:
+  schemas:
+    SpeciesResponse:
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: Nombre de especie
+        clasificacion:
+          type: string
+          description: Clasificacion de la especie, mamifero o reptil.
+        designacion:
+          type: string
+          description: Designacion de la especie, ejemplo sensible.
+        altura_promedio:
+          type: string
+          description: Altura promedio de la especie en centrimetros.
+        colores_de_piel:
+          type: string
+          description: una cadena separada por comas de colores de piel comunes para esta especie, "ninguno" si esta especie no suele tener piel.
+        colores_de_cabello:
+          type: string
+          description: una cadena separada por comas de colores de cabello comunes para esta especie, "ninguno" si esta especie no suele tener cabello.
+        colores_de_ojos:
+          type: string
+          description: una cadena separada por comas de colores de ojos comunes para esta especie, "ninguno" si esta especie no suele tener ojos.
+        esperanza_de_vida_promedio:
+          type: string
+          description: la esperanza de vida promedio de esta especie en años.
+        planeta_natal:
+          type: string
+          description: la URL de un recurso planetario, un planeta del que se origina esta especie.
+        idioma:
+          type: string
+          description: el idioma comúnmente hablado por esta especie.
+        personas:
+          type: string
+          description: una matriz de recursos URL de personas que forman parte de esta especie.
+        peliculas:
+          type: string
+          description: una variedad de recursos URL de películas en las que ha aparecido esta especie.
+        creado:
+          type: string
+          description: el formato de fecha ISO 8601 de la hora en que se creó este recurso.
+        editado:
+          type: string
+          description: el formato de fecha ISO 8601 de la hora en que se editó este recurso.
+        url:
+          type: string
+          description: la URL hipermedia de este recurso.
+    PlanetResponse:
+      type: object
+      properties:
+        nombre:
+          type: string
+          description: El nombre de este planeta.
+        periodo_rotacion:
+          type: string
+          description: El número de horas estándar que le toma a este planeta completar una sola rotación sobre su eje.
+        periodo_orbital:
+          type: string
+          description: El número de días estándar que le toma a este planeta completar una única órbita de su estrella local.
+        diameter:
+          type: string
+          description: El diámetro de este planeta en kilómetros.
+        clima:
+          type: string
+          description: El clima de este planeta. Separados por comas si son diversos.
+        gravedad:
+          type: string
+          description: Un número que indica la gravedad de este planeta, donde "1" es normal o 1 G estándar. "2" es dos veces o 2 G estándar. "0,5" es la mitad o 0,5 Gs estándar.
+        terreno:
+          type: string
+          description: El terreno de este planeta. Separados por comas si son diversos.
+        superficie_agua:
+          type: string
+          description: El porcentaje de la superficie del planeta que es agua o masas de agua naturales.
+        poblacion:
+          type: string
+          description: La población promedio de seres sintientes que habitan este planeta.
+        residentes:
+          type: string
+          description: Una variedad de recursos URL de personas que viven en este planeta.
+        peliculas:
+          type: string
+          description: Una variedad de recursos de URL de películas en las que ha aparecido este planeta.
+        creado:
+          type: string
+          description: el formato de fecha ISO 8601 de la hora en que se creó este recurso.
+        editado:
+          type: string
+          description: el formato de fecha ISO 8601 de la hora en que se editó este recurso.
+        url:
+          type: string
+          description: la URL hipermedia de este recurso.
+
+  securitySchemes: {}
