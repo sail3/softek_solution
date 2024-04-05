@@ -1,0 +1,83 @@
+org: sail3
+app: sail3-softek
+service: sail3-softek
+frameworkVersion: '3'
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-esbuild
+  - serverless-openapi-documentation
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-2
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource: arn:aws:dynamodb:us-east-2:557994696962:table/dyn-species-swapi
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource: arn:aws:dynamodb:us-east-2:557994696962:table/dyn-planet-swapi
+
+custom:
+  documentation:
+    title: Softek Solution | Pedro Charun
+    description: Api to gets planets and species from swapi.
+    contact:
+      email: mlosail3@gmail.com
+    version: 1.0.0
+
+functions:
+  addSpecies:
+    handler: ./src/functions/add-species/handler.addSpecies
+    events:
+      - httpApi:
+          path: /species
+          method: post
+  listSpecies:
+    handler: ./src/functions/list-species/handler.listSpecies
+    events:
+      - httpApi:
+          path: /species/{id}
+          method: get
+  addPlanet:
+    handler: ./src/functions/add-planet/handler.addPlanet
+    events:
+      - httpApi:
+          path: /planet
+          method: post
+  listPlanet:
+    handler: ./src/functions/list-planet/handler.listPlanet
+    events:
+      - httpApi:
+          path: /planet/{id}
+          method: get
+
+resources:
+  Resources:
+    DNYPlanetSwapi:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: dyn-planet-swapi
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: hash 
+    DNYSpeciesSwapi:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: dyn-species-swapi
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: hash             
