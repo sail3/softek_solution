@@ -3,10 +3,8 @@ import { retrieveSpeciesFromDynamo, saveSpeciesToDynamo } from 'src/services/dyn
 
 export const addSpecies = async (event) => {
   try {
-    const { body } = event;
-    const { id } = event.body
-
-    const findInDynamo = await retrieveSpeciesFromDynamo(id);
+    const body = JSON.parse(event.body)
+    const findInDynamo = await retrieveSpeciesFromDynamo(body.id);
     if (findInDynamo.Items.length > 0) {
       console.info('Error id already exists');
       return HttpResponse._400({
@@ -15,7 +13,7 @@ export const addSpecies = async (event) => {
     }
 
     delete body.id;
-    await saveSpeciesToDynamo(Number(id), body);
+    await saveSpeciesToDynamo(body.id, body);
 
     return HttpResponse._200({
       message: 'Saved species successfull',

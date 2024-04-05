@@ -13,15 +13,19 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-2
+  environment:
+    REGION: us-east-2
+    SPECIES_TABLE: dyn-species-swapi-din
+    PLANET_TABLE: dyn-planet-swapi-din
   iamRoleStatements:
     - Effect: Allow
       Action:
         - dynamodb:*
-      Resource: arn:aws:dynamodb:us-east-2:557994696962:table/dyn-species-swapi
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.SPECIES_TABLE}
     - Effect: Allow
       Action:
         - dynamodb:*
-      Resource: arn:aws:dynamodb:us-east-2:557994696962:table/dyn-planet-swapi
+      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PLANET_TABLE}
 
 custom:
   documentation:
